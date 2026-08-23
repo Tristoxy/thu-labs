@@ -37,6 +37,7 @@ for i in range(3):
     response = session.get(singers_url, params = params, timeout = timeout)
     response.encoding = "utf-8"
     response.raise_for_status()
+    time.sleep(random.uniform(1,2))
     # print(response.status_code)
 
     attrs1 = {"class": "nm nm-icn f-thide s-fc0"}
@@ -53,6 +54,7 @@ for i in range(3):
         singer_response = session.get(singer_url, timeout = timeout)
         singer_response.encoding = "utf-8"
         singer_response.raise_for_status()
+        time.sleep(random.uniform(1,2))
         singer_soup = BeautifulSoup(singer_response.text, "html.parser")
 
         # with open("debug.html", "w", encoding="utf-8") as file:
@@ -67,6 +69,9 @@ for i in range(3):
         params1 = parse_qs(split_singer_url.query)
         singer_intro_url = urljoin(root_url, "artist/desc")
         singer_intro_response = session.get(singer_intro_url, params = params1, timeout = timeout)
+        singer_intro_response.encoding = "utf-8"
+        singer_intro_response.raise_for_status()
+        time.sleep(random.uniform(1,2))
         singer_intro_soup = BeautifulSoup(singer_intro_response.text, "html.parser")
         singer_intro_tag = singer_intro_soup.find(lambda tag: tag.name == "h2" and tag.get_text(strip = True).endswith("简介"))
         singer_intro_tag = singer_intro_tag.find_next_sibling()
@@ -84,10 +89,10 @@ for i in range(3):
 
             # song的歌词加密，需要js逆向解析
             # 加密函数（asrsea）处断点+F8：i0S = {id: '108485', lv: -1, tv: -1, csrf_token: 'cb438dcaf44d8d0db77cf54bb0dee0ca'}
-            singer_song_response = session.get(singer_song_url, timeout = timeout)
-            singer_song_response.encoding = "utf-8"
-            singer_song_response.raise_for_status()
-            singer_song_soup = BeautifulSoup(singer_song_response.text, "html.parser")
+            # singer_song_response = session.get(singer_song_url, timeout = timeout)
+            # singer_song_response.encoding = "utf-8"
+            # singer_song_response.raise_for_status()
+            # singer_song_soup = BeautifulSoup(singer_song_response.text, "html.parser")
             # attrs5 = {"id": ["lyric-content", "flag_more"]}
             # singer_song_lyrics_tag = singer_song_soup.find_all("div", attrs5)
             # print(singer_song_lyrics_tag)
@@ -100,15 +105,17 @@ for i in range(3):
                     "params": encrypt_keys["encText"],
                     "encSecKey": encrypt_keys["encSecKey"]
                 }
+
             singer_song_lyrics_response = session.post(singer_song_lyrics_url, data = data, timeout = timeout)
             singer_song_lyrics_response.encoding = "utf-8"
             singer_song_lyrics_response.raise_for_status()
+            time.sleep(random.uniform(1,2))
             # 歌词在响应(json)里
             singer_song_lyrics = singer_song_lyrics_response.json()["lrc"]["lyric"]
             # sub是替换,(?:)为非捕获分组，数据不保存在group里
             singer_song_lyrics = re.sub(r"\[\d{2}:\d{2}(?:\.\d+)?\]", "", singer_song_lyrics)
             singer_song_lyrics = "\n".join(line.strip() for line in singer_song_lyrics.splitlines() if line.strip())
-            # print(singer_song_lyrics)
+            print(singer_song_lyrics)
 
             time.sleep(random.uniform(1,2))
 
