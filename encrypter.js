@@ -1188,6 +1188,7 @@ function js_encrypter(i0S){
     return bVk2q;
 }
 
+//便于py调用js中的解码函数
 process.stdout.write(
     JSON.stringify(js_encrypter(JSON.parse(process.argv[2])))
 );

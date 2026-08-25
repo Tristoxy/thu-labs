@@ -87,16 +87,30 @@ for i in range(3):
             singer_song_name_tag = singer_song.find_next()
             singer_song_name = singer_song_name_tag.get("title")
 
+            singer_song_response = session.get(singer_song_url, timeout = timeout)
+            singer_song_response.encoding = "utf-8"
+            singer_song_response.raise_for_status()
+            singer_song_soup = BeautifulSoup(singer_song_response.text, "html.parser")
+            attrs5 = {"href": lambda href: href and href.startswith("/album")}
+            singer_song_album_tag = singer_song_soup.find("a", attrs5)
+            singer_song_album_url = singer_song_album_tag.get("href")
+            singer_song_album_url = urljoin(root_url, singer_song_album_url)
+            singer_song_album_response = session.get(singer_song_album_url, timeout = timeout)
+            singer_song_album_response.encoding = "utf-8"
+            singer_song_album_response.raise_for_status()
+            time.sleep(random.uniform(1,2))
+            singer_song_album_soup = BeautifulSoup(singer_song_album_response.text, "html.parser")
+            attrs6 = {"class": "f-ff2"}
+            singer_song_album_name_tag = singer_song_album_soup.find("h2", attrs6)
+            singer_song_album_name = singer_song_album_name_tag.get_text(strip = True)
+            # print(singer_song_album_name)
+            attrs7 = {"alt": lambda alt: alt and alt.startswith(singer_song_album_name)}
+            singer_song_album_tag = singer_song_album_soup.find("img", attrs7)
+            singer_song_album = singer_song_album_tag.get("src")
+            # print(singer_song_album)
+
             # song的歌词加密，需要js逆向解析
             # 加密函数（asrsea）处断点+F8：i0S = {id: '108485', lv: -1, tv: -1, csrf_token: 'cb438dcaf44d8d0db77cf54bb0dee0ca'}
-            # singer_song_response = session.get(singer_song_url, timeout = timeout)
-            # singer_song_response.encoding = "utf-8"
-            # singer_song_response.raise_for_status()
-            # singer_song_soup = BeautifulSoup(singer_song_response.text, "html.parser")
-            # attrs5 = {"id": ["lyric-content", "flag_more"]}
-            # singer_song_lyrics_tag = singer_song_soup.find_all("div", attrs5)
-            # print(singer_song_lyrics_tag)
-            
             singer_song_id = parse_qs(urlsplit(singer_song_url).query)["id"][0] # parse_qs得到的values都是list
             i0S = {"id": singer_song_id, "lv": -1, "tv": -1, "csrf_token": session.cookies.get("__csrf")}
             encrypt_keys = py_encrypter(i0S) # dict
@@ -105,7 +119,7 @@ for i in range(3):
                     "params": encrypt_keys["encText"],
                     "encSecKey": encrypt_keys["encSecKey"]
                 }
-
+            
             singer_song_lyrics_response = session.post(singer_song_lyrics_url, data = data, timeout = timeout)
             singer_song_lyrics_response.encoding = "utf-8"
             singer_song_lyrics_response.raise_for_status()
@@ -115,9 +129,27 @@ for i in range(3):
             # sub是替换,(?:)为非捕获分组，数据不保存在group里
             singer_song_lyrics = re.sub(r"\[\d{2}:\d{2}(?:\.\d+)?\]", "", singer_song_lyrics)
             singer_song_lyrics = "\n".join(line.strip() for line in singer_song_lyrics.splitlines() if line.strip())
-            print(singer_song_lyrics)
+            # print(singer_song_lyrics)
 
+            # keyword = "每次听这首歌的时候"
+            # print(keyword in singer_song_response.text)
+
+            # song的评论加密，需要js逆向解析
+            singer_song_comments_url = urljoin(root_url, "weapi/comment/resource/comments/get")
+            # 加密函数（asrsea）处断点+F8：i0S = {"csrf_token": "cb438dcaf44d8d0db77cf54bb0dee0ca", "cursor": -1, "offset": 0, "orderType": 1, "pageNo": 1, "pageSize": 20, "rid": "R_SO_4_108485", "threadId": "R_SO_4_108485"}
+            i0S = {"csrf_token": session.cookies.get("__csrf"), "cursor": -1, "offset": 0, "orderType": 1, "pageNo": 1, "pageSize": 3, "rid": f"R_SO_4_{singer_song_id}", "threadId": f"R_SO_4_{singer_song_id}"}
+            encrypt_keys = py_encrypter(i0S) # dict
+            data={
+                    "params": encrypt_keys["encText"],
+                    "encSecKey": encrypt_keys["encSecKey"]
+                }
+            singer_song_comments_response = session.post(singer_song_comments_url, data = data, timeout = timeout)
+            singer_song_comments_response.encoding = "utf-8"
+            singer_song_comments_response.raise_for_status()
             time.sleep(random.uniform(1,2))
+            # print(singer_song_comments_response.json())
+            singer_song_top3comments = singer_song_comments_response.json()["data"]["hotComments"][:3]
+            print(singer_song_top3comments)
 
             break
 
