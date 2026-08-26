@@ -6,3 +6,6 @@ note.md
 
 # debug.html
 *.html
+
+# database
+*.db
