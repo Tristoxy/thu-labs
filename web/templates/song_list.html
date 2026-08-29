@@ -1,0 +1,72 @@
+<h1>歌曲列表页</h1>
+
+{% for song in page_songs %}
+    <!-- 歌曲信息 -->
+    <div class="page_song">
+        <!-- 专辑照片 -->
+        {% if song.album_image %}
+            <img
+                src = "{{ song.album_image }}"
+                alt = "{{ song.name }}"
+                width = "100"
+            >
+        {% endif %}
+        <!-- 歌曲 -->
+        <p>
+            <a href="/songs/{{ song.id }}/?prev_page={{ page_songs.number }}"> <strong>{{ song.name }}</strong> </a>
+        </p>
+        <!-- 专辑名称 -->
+        {% if song.album_name %}
+            <p>专辑：{{ song.album_name }}</p>
+        {% endif %}
+    </div>
+{% endfor %}
+
+
+<!-- 页面管理 -->
+<div class = "page_management">
+
+    <!-- 首页、上一页 -->
+    {% if page_songs.has_previous %}
+        <a href="?page=1">首页</a>
+        <a href="?page={{ page_songs.previous_page_number }}">上一页</a>
+    {% endif %}
+
+    <!-- 页码按钮跳转 -->
+    {% for page_number in page_numbers %}
+        <a href="?page={{ page_number }}">{{ page_number }}</a>
+    {% endfor %}
+
+    <!-- 当前页、页数提示(一行内) -->
+    <span>
+        第 {{ page_songs.number }} 页，
+        共 {{ page_songs.paginator.num_pages }} 页
+    </span>
+
+    <!-- 下一页、尾页 -->
+    {% if page_songs.has_next %}
+        <a href="?page={{ page_songs.next_page_number }}">下一页</a>
+        <a href="?page={{ page_songs.paginator.num_pages }}">尾页</a>
+    {% endif %}
+</div>
+
+    <!-- 输入页码跳转 --> 
+    <form method="get"> 
+        <input name="page" type="number">
+        <button type="submit">跳转</button>
+    </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

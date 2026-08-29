@@ -1,0 +1,82 @@
+<h1>歌曲详情页</h1>
+
+<h2>{{ song.name }}</h2>
+
+<h3>歌手</h3>
+
+{% if relate_singers %}
+    {% for relate_singer in relate_singers %}
+        <p>{{ relate_singer.singer.name }}</p>
+    {% endfor %}
+{% else %}
+    <p>无歌手信息</p>
+{% endif %}
+
+<!-- 专辑图片 -->
+{% if song.album_image %}
+    <img
+        src="{{ song.album_image }}"
+        alt="{{ song.name }}"
+        width="250"
+    >
+{% endif %}
+
+<!-- 专辑名称 -->
+{% if song.album_name %}
+    <p>
+        <strong>专辑：</strong>{{ song.album_name }}
+    </p>
+{% endif %}
+
+<!-- 歌词 -->
+<!-- pre展示处理过的歌词，保留换行 -->
+<h3>歌词</h3>
+
+{% if song.lyrics %}
+    <pre>{{ song.lyrics }}</pre>
+{% else %}
+    <p>无歌词信息</p>
+{% endif %}
+
+<!-- 网易云原始url -->
+{% if song.url %}
+    <p>
+        <a href="{{ song.url }}">前往网易云原始网页</a>
+    </p>
+{% endif %}
+
+<!-- 评论 -->
+{% if comments %}
+    {% for comment in comments %}
+        <div class="comment">
+
+            <!-- 用户头像 -->
+            {% if comment.avatar %}
+                <img
+                    src="{{ comment.avatar }}"
+                    alt="{{ comment.nickname }}"
+                    width="50"
+                >
+            {% endif %}
+
+            <!-- 用户昵称 -->
+            {% if comment.nickname %}
+                <p><strong>{{ comment.nickname }}</strong></p>
+            {% else %}
+                <p><strong>匿名用户</strong></p>
+            {% endif %}
+
+            <!-- 评论内容 -->
+            <p>{{ comment.content }}</p>
+
+            <!-- 评论时间和点赞数 -->
+            <p>
+                时间：{{ comment.time }}
+                点赞数：{{ comment.liked_count }}
+            </p>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>暂无评论。</p>
+{% endif %}
+<a href="/?page={{ prev_page }}">返回歌曲列表页</a>

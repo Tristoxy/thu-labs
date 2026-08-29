@@ -5,7 +5,11 @@ note.md
 .env
 
 # debug.html
-*.html
+debug.html
 
 # database
 *.db
+
+# cache
+__pycache__/
+*.pyc

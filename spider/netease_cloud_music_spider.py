@@ -402,7 +402,7 @@ def crawl_singers(session, category_id, try_singer_cnt=None, try_song_cnt=None, 
         crawl_singer_songs(session, singer, try_song_cnt, try_comment_cnt)
         # 爬取后，不报错即可判定歌手finished
         # 不能是试爬情况
-        if song_cnt is None:
+        if try_song_cnt is None:
             update_progress(database, singer["id"])
 
 # 爬取歌曲信息 id, name, album_name, album_img, lyrics, comments, url
@@ -547,7 +547,7 @@ def crawl_singer_song_top3comments(session, song, try_comment_cnt=3):
 
         comment_id = comment.get("commentId")
 
-        print(f"正在爬取第 {current_comment_cnt + index} 条评论")
+        print(f"正在爬取第 {current_comment_cnt + index + 1} 条评论")
 
         user = comment.get("user") or {}
 
