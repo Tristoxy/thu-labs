@@ -1,3 +1,14 @@
+<!-- 页面关联 -->
+<p>
+    <a href="/">前往歌曲列表页</a>
+</p>
+<p>
+    <a href="/singers/">前往歌手列表页</a>
+</p>
+<p>
+    <a href="/search/">前往搜索页</a>
+</p>
+
 <h1>歌曲详情页</h1>
 
 <h2>{{ song.name }}</h2>
@@ -6,7 +17,7 @@
 
 {% if relate_singers %}
     {% for relate_singer in relate_singers %}
-        <p>{{ relate_singer.singer.name }}</p>
+        <a href="/singers/{{ relate_singer.singer.id }}/">{{ relate_singer.singer.name }}</a>
     {% endfor %}
 {% else %}
     <p>无歌手信息</p>
@@ -14,12 +25,8 @@
 
 <!-- 专辑图片 -->
 {% if song.album_image %}
-    <img
-        src="{{ song.album_image }}"
-        alt="{{ song.name }}"
-        width="250"
-    >
-{% endif %}
+    <img src="{{ song.album_image }}" alt="{{ song.name }}" width="250"
+    >{% endif %}
 
 <!-- 专辑名称 -->
 {% if song.album_name %}
@@ -45,18 +52,41 @@
     </p>
 {% endif %}
 
+<!-- 发表评论 -->
+<h3>发表评论</h3>
+
+{% if error %}
+    <p>{{ error }}</p>
+{% endif %}
+
+<!-- django默认启用csrf -->
+<form method="post">
+    {% csrf_token %}
+    <!-- 评论操作类型 -->
+    <input type="hidden" name="comment_op" value="comment_add">
+    <div>
+        <label for="input_comment_nickname">昵称：</label>
+        <input name="nickname" type="text" id="input_comment_nickname">
+    </div>
+    <div>
+        <label for="input_comment_content">评论：</label>
+        <textarea name="content" rows="5" cols="50" id="input_comment_content"></textarea>
+    </div>
+
+    <button type="submit">发表评论</button>
+</form>
+
+
 <!-- 评论 -->
+<h3>评论</h3>
+
 {% if comments %}
     {% for comment in comments %}
         <div class="comment">
 
             <!-- 用户头像 -->
             {% if comment.avatar %}
-                <img
-                    src="{{ comment.avatar }}"
-                    alt="{{ comment.nickname }}"
-                    width="50"
-                >
+                <img src="{{ comment.avatar }}" alt="{{ comment.nickname }}" width="50">
             {% endif %}
 
             <!-- 用户昵称 -->
@@ -74,9 +104,19 @@
                 时间：{{ comment.time }}
                 点赞数：{{ comment.liked_count }}
             </p>
+
+            <!-- 删除当前评论 -->
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="comment_op" value="comment_delete">
+                <input type="hidden" name="comment_id" value="{{ comment.id }}">
+
+                <button type="submit">删除评论</button>
+            </form>
         </div>
     {% endfor %}
 {% else %}
     <p>暂无评论。</p>
 {% endif %}
-<a href="/?page={{ prev_page }}">返回歌曲列表页</a>
+
+<a href="{{ return_page }}">返回来源页面</a>

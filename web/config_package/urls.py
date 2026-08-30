@@ -21,5 +21,9 @@ from netease_cloud_music_app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.song_list),
-    path('songs/<int:song_id>/', views.song_info) # django接收song_id = xxx
+    path('songs/<int:song_id>/', views.song_info), # django接收song_id = xxx
+    path('singers/<int:singer_id>/', views.singer_info),
+    path("singers/", views.singer_list),
+    path("search/", views.search),
+    path("search/result/", views.search_result)
 ]

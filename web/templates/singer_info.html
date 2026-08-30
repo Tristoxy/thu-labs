@@ -1,0 +1,66 @@
+<!-- 页面关联 -->
+<p>
+    <a href="/">前往歌曲列表页</a>
+</p>
+<p>
+    <a href="/singers/">前往歌手列表页</a>
+</p>
+<p>
+    <a href="/search/">前往搜索页</a>
+</p>
+
+<h1>歌手详情页</h1>
+
+<!-- 歌手名称 -->
+<h2>{{ singer.name }}</h2>
+
+<!-- 歌手图片 -->
+{% if singer.image %}
+    <img src="{{ singer.image }}" alt="{{ singer.name }}" width="250">
+{% endif %}
+
+<!-- 歌手简介 -->
+<h3>歌手简介</h3>
+
+{% if singer.intro %}
+    <p>{{ singer.intro }}</p>
+{% else %}
+    <p>无歌手简介。</p>
+{% endif %}
+
+<!-- 网易云歌手原始url -->
+{% if singer.url %}
+    <p>
+        <a href="{{ singer.url }}">前往网易云歌手原始网页</a>
+    </p>
+{% endif %}
+
+<!-- 歌手的歌曲们 -->
+<h3>歌曲</h3>
+
+{% if relate_songs %}
+    {% for relate_song in relate_songs %}
+        <div class="singer_song">
+
+            <!-- 歌曲专辑图片 -->
+            {% if relate_song.song.album_image %}
+                <img src="{{ relate_song.song.album_image }}" alt="{{ relate_song.song.name }}" width="100">
+            {% endif %}
+            
+            <!-- 歌曲 -->
+            <p>
+                <a href="/songs/{{ relate_song.song.id }}/">{{ relate_song.song.name }}</a>
+            </p>
+
+            <!-- 专辑名称 -->
+            {% if relate_song.song.album_name %}
+                <p>专辑：{{ relate_song.song.album_name }}</p>
+            {% endif %}
+        
+        </div>
+    {% endfor %}
+{% else %}
+    <p>无歌曲信息。</p>
+{% endif %}
+
+<a href="{{ return_page }}">返回来源页面</a>

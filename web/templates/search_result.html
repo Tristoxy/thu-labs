@@ -1,0 +1,124 @@
+<!-- 页面关联 -->
+<p>
+    <a href="/">前往歌曲列表页</a>
+</p>
+<p>
+    <a href="/singers/">前往歌手列表页</a>
+</p>
+<p>
+    <a href="/search/">前往搜索页</a>
+</p>
+
+<h1>搜索结果页</h1>
+
+{% if error %}
+    <p>{{ error }}</p>
+{% else %}
+
+<!-- 搜索信息 -->
+<p>搜索关键词：{{ keyword }}</p>
+<p>
+    搜索类型：
+    {% if search_type == "song" %}
+        歌曲
+    {% else %}
+        歌手
+    {% endif %}
+</p>
+<p>
+    搜索结果数量：{{ res_cnt }} 条，
+    搜索耗时：{{ delta_time }} 秒
+</p>
+
+<!-- 搜索结果，抄song_list/singer_list -->
+{% if search_type == "song" %}
+    {% if page_res %}
+        {% for song in page_res %}
+            <div class="search_result_song">
+                {% if song.album_image %}
+                    <img src="{{ song.album_image }}" alt="{{ song.name }}" width="100">
+                {% endif %}
+                <p>
+                    <a href="/songs/{{ song.id }}/?return_page={{ request.get_full_path|urlencode:"" }}">
+                        <strong>{{ song.name }}</strong>
+                    </a>
+                </p>
+                <p>
+                    <strong>歌手：</strong>
+                    {% if song.singersongs_set.all %}
+                        {% for relate_singer in song.singersongs_set.all %}
+
+                            <a href="/singers/{{ relate_singer.singer.id }}/?return_page={{ request.get_full_path|urlencode:""}}">
+                                {{ relate_singer.singer.name }}
+                            </a>
+                            {% if not forloop.last %}
+                                、
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        无歌手信息
+                    {% endif %}
+                </p>
+                {% if song.album_name %}
+                    <p>专辑：{{ song.album_name }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>无歌曲符合条件。</p>
+    {% endif %}
+{% endif %}
+
+{% if search_type == "singer" %}
+    {% if page_res %}
+        {% for singer in page_res %}
+            <div class="search_result_singer">
+                {% if singer.image %}
+                    <img src="{{ singer.image }}" alt="{{ singer.name }}" width="100">
+                {% endif %}
+                <p>
+                    <a href="/singers/{{ singer.id }}/?return_page={{ request.get_full_path|urlencode:"" }}">
+                        <strong>{{ singer.name }}</strong>
+                    </a>
+                </p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>无歌手符合条件。</p>
+    {% endif %}
+{% endif %}
+
+<!-- 页面管理，抄 -->
+{% if page_res %}
+    <div class="page_management">
+            <!-- 首页和上一页 -->
+            {% if page_res.has_previous %}
+                <a href="?keyword={{ keyword|urlencode }}&search_type={{ search_type }}&page=1">首页</a>
+                <a href="?keyword={{ keyword|urlencode }}&search_type={{ search_type }}&page={{ page_results.previous_page_number }}">上一页</a>
+            {% endif %}
+            <!-- 页码按钮 -->
+            {% for page_number in page_numbers %}
+                <a href="?keyword={{ keyword|urlencode }}&search_type={{ search_type }}&page={{ page_number }}">{{ page_number }}</a>
+            {% endfor %}
+            <!-- 当前页提示 -->
+            <span>
+                第 {{ page_results.number }} 页，
+                共 {{ page_results.paginator.num_pages }} 页
+            </span>
+            <!-- 下一页和尾页 -->
+            {% if page_res.has_next %}
+                <a href="?keyword={{ keyword|urlencode }}&search_type={{ search_type }}&page={{ page_results.next_page_number }}">下一页</a>
+                <a href="?keyword={{ keyword|urlencode }}&search_type={{ search_type }}&page={{ page_results.paginator.num_pages }}">尾页</a>
+            {% endif %}
+        </div>
+        <!-- 输入页码跳转 -->
+        <form method="get">
+            <!-- 保留关键词和搜索类型 -->
+            <input type="hidden" name="keyword" value="{{ keyword }}">
+            <input type="hidden" name="search_type" value="{{ search_type }}">
+            <label for="input_result_page">页码跳转至：</label>
+            <input name="page" type="number" id="input_result_page" min="1" max="{{ page_results.paginator.num_pages }}" required>
+            <button type="submit">跳转</button>
+        </form>
+    {% endif %}
+{% endif %}
