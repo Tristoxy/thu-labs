@@ -1,13 +1,12 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'thu_purple.css' %}">
+
 <!-- 页面关联 -->
-<p>
-    <a href="/">前往歌曲列表页</a>
-</p>
-<p>
-    <a href="/singers/">前往歌手列表页</a>
-</p>
-<p>
-    <a href="/search/">前往搜索页</a>
-</p>
+<div class="navigation">
+    <a href="/">歌曲列表页</a>
+    <a href="/singers/">歌手列表页</a>
+    <a href="/search/">搜索页</a>
+</div>
 
 <h1>搜索结果页</h1>
 
@@ -31,37 +30,60 @@
 </p>
 
 <!-- 搜索结果，抄song_list/singer_list -->
+<h2>搜索结果</h2>
+<!-- id/relevance排序 --> 
+<form method="get">
+    <!-- 搜索关键词 -->
+    <input type="hidden" name="keyword" value="{{ keyword }}">
+    <!-- 搜索类型 -->
+    <input type="hidden" name="search_type" value="{{ search_type }}">
+    <!-- 排序类型 -->
+    <span>排序方式：</span>
+
+    <label for="sort_id">默认排序（按数据库id排序）</label>
+    <input name="sort" value="id" type="radio" id="sort_id" {% if sort == "id" %}checked{% endif %}>
+
+    <label for="sort_relevance">相关度排序</label>
+    <input name="sort" value="relevance" type="radio" id="sort_relevance" {% if sort == "relevance" %}checked{% endif %}>
+
+    <button type="submit">排序</button>
+</form>
+
 {% if search_type == "song" %}
     {% if page_res %}
         {% for song in page_res %}
             <div class="search_result_song">
                 {% if song.album_image %}
-                    <img src="{{ song.album_image }}" alt="{{ song.name }}" width="100">
+                    <div class="song_img">
+                        <img src="{{ song.album_image }}" alt="{{ song.name }}" width="100">
+                    </div>
                 {% endif %}
-                <p>
-                    <a href="/songs/{{ song.id }}/?return_page={{ request.get_full_path|urlencode:"" }}">
-                        <strong>{{ song.name }}</strong>
-                    </a>
-                </p>
-                <p>
-                    <strong>歌手：</strong>
-                    {% if song.singersongs_set.all %}
-                        {% for relate_singer in song.singersongs_set.all %}
+                <div class="song_info">
+                    <p>
+                        <a href="/songs/{{ song.id }}/?return_page={{ request.get_full_path|urlencode:"" }}">
+                            <strong>{{ song.name }}</strong>
+                        </a>
+                    </p>
+                    <p>
+                        <strong>歌手：</strong>
+                        {% if song.singersongs_set.all %}
+                            {% for relate_singer in song.singersongs_set.all %}
 
-                            <a href="/singers/{{ relate_singer.singer.id }}/?return_page={{ request.get_full_path|urlencode:""}}">
-                                {{ relate_singer.singer.name }}
-                            </a>
-                            {% if not forloop.last %}
-                                、
-                            {% endif %}
-                        {% endfor %}
-                    {% else %}
-                        无歌手信息
+                                <a href="/singers/{{ relate_singer.singer.id }}/?return_page={{ request.get_full_path|urlencode:""}}">
+                                    <strong>{{ relate_singer.singer.name }}</strong>
+                                </a>
+                                {% if not forloop.last %}
+                                    、
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            无歌手信息
+                        {% endif %}
+                    </p>
+                    {% if song.album_name %}
+                        <p><strong>专辑：{{ song.album_name }}</strong></p>
                     {% endif %}
-                </p>
-                {% if song.album_name %}
-                    <p>专辑：{{ song.album_name }}</p>
-                {% endif %}
+                </div>
             </div>
         {% endfor %}
     {% else %}
@@ -93,22 +115,22 @@
     <div class="page_management">
             <!-- 首页和上一页 -->
             {% if page_res.has_previous %}
-                <a href="?keyword={{ keyword|urlencode }}&search_type={{ search_type }}&page=1">首页</a>
-                <a href="?keyword={{ keyword|urlencode }}&search_type={{ search_type }}&page={{ page_results.previous_page_number }}">上一页</a>
+                <a href="?keyword={{ keyword|urlencode }}&search_type={{ search_type }}&sort={{ sort }}&page=1">首页</a>
+                <a href="?keyword={{ keyword|urlencode }}&search_type={{ search_type }}&sort={{ sort }}&page={{ page_res.previous_page_number }}">上一页</a>
             {% endif %}
             <!-- 页码按钮 -->
             {% for page_number in page_numbers %}
-                <a href="?keyword={{ keyword|urlencode }}&search_type={{ search_type }}&page={{ page_number }}">{{ page_number }}</a>
+                <a href="?keyword={{ keyword|urlencode }}&search_type={{ search_type }}&sort={{ sort }}&page={{ page_number }}">{{ page_number }}</a>
             {% endfor %}
             <!-- 当前页提示 -->
             <span>
-                第 {{ page_results.number }} 页，
-                共 {{ page_results.paginator.num_pages }} 页
+                第 {{ page_res.number }} 页，
+                共 {{ page_res.paginator.num_pages }} 页
             </span>
             <!-- 下一页和尾页 -->
             {% if page_res.has_next %}
-                <a href="?keyword={{ keyword|urlencode }}&search_type={{ search_type }}&page={{ page_results.next_page_number }}">下一页</a>
-                <a href="?keyword={{ keyword|urlencode }}&search_type={{ search_type }}&page={{ page_results.paginator.num_pages }}">尾页</a>
+                <a href="?keyword={{ keyword|urlencode }}&search_type={{ search_type }}&sort={{ sort }}&page={{ page_res.next_page_number }}">下一页</a>
+                <a href="?keyword={{ keyword|urlencode }}&search_type={{ search_type }}&sort={{ sort }}&page={{ page_res.paginator.num_pages }}">尾页</a>
             {% endif %}
         </div>
         <!-- 输入页码跳转 -->
@@ -116,8 +138,9 @@
             <!-- 保留关键词和搜索类型 -->
             <input type="hidden" name="keyword" value="{{ keyword }}">
             <input type="hidden" name="search_type" value="{{ search_type }}">
+            <input type="hidden" name="sort" value="{{ sort }}">
             <label for="input_result_page">页码跳转至：</label>
-            <input name="page" type="number" id="input_result_page" min="1" max="{{ page_results.paginator.num_pages }}" required>
+            <input name="page" type="number" id="input_result_page" min="1" max="{{ page_res.paginator.num_pages }}" required>
             <button type="submit">跳转</button>
         </form>
     {% endif %}

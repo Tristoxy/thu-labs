@@ -1,0 +1,206 @@
+/* 颜色（css全局变量） */
+:root {
+    --thu_purple: #660874;
+    --thu_purple_dark: #4f075a;
+    --background: #f7f7f9;
+    --card: #ffffff;
+    --text1: #333333;
+    --text2: #888888;
+    --text3: #ffffff;
+    --border: #dcd8e0;
+}
+
+/* 使width控制内容块真正宽度 */
+* {
+    box-sizing: border-box;
+}
+
+/* 页面整体 */
+body {
+    max-width: 1000px;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: auto; /* 浏览器自动计算，使内容居中 */
+    margin-right: auto;
+    padding-top: 32px;
+    padding-bottom: 32px;
+    padding-left: 24px;
+    padding-right: 24px;
+
+    background: var(--background);
+    color: var(--text1);
+
+    font-family: "Inter";
+    line-height: 1.5; /* 行间距 */
+}
+
+/* 页面上方导航 */
+.navigation {
+    margin-bottom: 24px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 16px;
+    padding-right: 16px;
+    background: var(--thu_purple);
+}
+.navigation a{
+    margin-right: 22px;
+    color: var(--card);
+    font-weight: 450;
+    text-decoration: none;
+}
+.navigation a:hover { /* 鼠标放置加深 */
+    color: var(--border);
+}
+
+/* 标题 */
+h1 {
+    margin-bottom: 24px;
+    padding-bottom: 10px;
+    color:var(--thu_purple);
+    border-bottom: 1px solid var(--thu_purple); /* 下划线 */
+    font-weight: 700;
+    letter-spacing: 0.5px; /* 字间距 */
+}
+h2,h3 {
+    color:var(--thu_purple_dark);
+    font-weight: 600;
+}
+
+/* 列表卡片 */
+.page_song,
+.page_singer,
+.search_result_song,
+.search_result_singer,
+.singer_song,
+.comment {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    margin-left: 0;
+    margin-right: 0;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 26px;
+    padding-right: 26px;
+
+    background: var(--card);
+    border: 1px solid var(--border);
+}
+
+/* 卡片中链接 */
+.url a, /* 补前往原始网页的链接 */
+.page_song a,
+.page_singer a,
+.search_result_song a,
+.search_result_singer a,
+.singer_song a, 
+.song_singer a {
+    color: var(--thu_purple);
+}
+.url a:hover,
+.page_song a:hover,
+.page_singer a:hover,
+.search_result_song a:hover,
+.search_result_singer a:hover,
+.singer_song a:hover, 
+.song_singer a:hover {
+    color: var(--thu_purple_dark);
+}
+
+/* 图片 */
+.page_song img,
+.page_singer img,
+.search_result_song img,
+.search_result_singer img,
+.singer_song img,
+.comment img {
+    float: left;
+    margin-right: 30px;
+}
+.song_album img {
+    margin-top: 24px;
+}
+/* 单独列出使图片居中 */
+.page_song,
+.page_singer,
+.search_result_song,
+.search_result_singer,
+.singer_song {
+    display: flex;
+    align-items: center;
+}
+
+/* 表单 */
+form {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+}
+/* 表单的输入框 */
+input[type="text"],
+input[type="number"],
+textarea {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 1px solid var(--border);
+    font: inherit; /* 输入框输入的文字字体继承网页字体 */
+}
+
+/* 表单提交按钮 */
+button {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+
+    color: var(--text3);
+    background: var(--thu_purple);
+
+    border: 0; /* 去掉搜索框外壳 */
+    cursor: pointer; /* 鼠标箭头变手掌 */
+}
+button:hover {
+    background: var(--thu_purple_dark);
+}
+
+/* 分页 */
+.page_management {
+    margin-top: 24px;
+    margin-bottom: 12px;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 16px;
+    text-align: center; /* 文字水平居中 */
+    background: var(--card);
+    border: 1px solid var(--border);
+}
+.page_management a,
+.page_management span {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 6px;
+    margin-right: 6px;
+}
+.page_management a {
+    color: var(--thu_purple);
+}
+.page_management a:hover {
+    color: var(--thu_purple_dark);
+}
+
+/* 歌词 */
+pre {
+    padding: 16px;
+    white-space: pre-wrap; /* 保留换行和空格，但是允许自动换行 */
+
+    background: var(--card);
+    border: 1px solid var(--border);
+
+    font-family: inherit; /* 继承字体，不适用浏览器默认字体 */
+}

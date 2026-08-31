@@ -6,12 +6,53 @@ from datetime import datetime
 from django.db.models import Q # 通过Q把查询关键字条件包装成可被filter的对象
 import time # 计算搜索时间
 
+# 相关度排序算法
+def song_relevance(song, keyword):
+    score = 0
+    keyword = keyword.lower()
+    # 歌曲名匹配
+    if song.name:
+        name = song.name.lower()
+        if name == keyword:
+            score += 10
+        elif keyword in name:
+            score += 8
+    # # 歌手名匹配（已筛过）
+    # for singer_song in song.singersongs_set.all():
+    #     singer_name = singer_song.singer.name.lower()
+    #     if singer_name == keyword:
+    #         score += 7
+    #     elif keyword in singer_name:
+    #         score += 5
+    # 3. 歌词匹配
+    if song.lyrics:
+        lyrics = song.lyrics.lower()
+        if keyword in lyrics:
+            score += 3
+    return score
+def singer_relevance(singer, keyword):
+    score = 0
+    keyword = keyword.lower()
+    # 1. 歌手名字匹配
+    if singer.name:
+        name = singer.name.lower()
+        if name == keyword:
+            score += 10
+        elif keyword in name:
+            score += 8
+    # 2. 歌手简介匹配
+    if singer.intro:
+        intro = singer.intro.lower()
+        if keyword in intro:
+            score += 3
+    return score
+
 # 歌曲列表页
 # request是一个HttpRequest对象(method, path(url), Get(返回querydict))
 def song_list(request):
     # 页面元素、分页
     # queryset的orderby方法
-    songs = Songs.objects.all().order_by("id")[:100]
+    songs = Songs.objects.all().order_by("id")
     paginator = Paginator(songs, 10)
     page_id = request.GET.get("page", 1) # 用户输入的页码,GET得到参数字典
     page_songs = paginator.get_page(page_id)
@@ -143,6 +184,7 @@ def search_result(request):
     keyword = request.GET.get("keyword", "").strip()
     search_type = request.GET.get("search_type", "song")
     page_id = request.GET.get("page", 1)
+    sort = request.GET.get("sort", "id") # 初始默认按id排序
 
     # 异常搜索情况
     error = None
@@ -162,14 +204,22 @@ def search_result(request):
                   Q(name__icontains=keyword)
                 | Q(lyrics__icontains=keyword)
                 | Q(singersongs__singer__name__icontains=keyword)
-            ).order_by("id")
+            )
+            if sort == "relevance":
+                res = sorted(res, key=lambda song: song_relevance(song, keyword), reverse=True)
+            else:
+                res = res.order_by("id")
 
         # 搜索歌手
         if search_type == "singer":
             res = Singers.objects.filter(
                   Q(name__icontains=keyword)
                 | Q(intro__icontains=keyword)
-            ).order_by("id")
+            )
+            if sort == "relevance":
+                res = sorted(res, key=lambda singer: singer_relevance(singer, keyword), reverse=True)
+            else:
+                res = res.order_by("id")
 
         # 页面管理
         paginator = Paginator(res, 10)
@@ -191,6 +241,7 @@ def search_result(request):
                     {
                         "keyword": keyword,
                         "search_type": search_type,
+                        "sort": sort,
                         "page_res": page_res,
                         "page_numbers": page_numbers,
                         "res_cnt": res_cnt,
