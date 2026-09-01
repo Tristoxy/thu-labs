@@ -13,3 +13,6 @@ debug.html
 # cache
 __pycache__/
 *.pyc
+
+#analysis results
+*.png
