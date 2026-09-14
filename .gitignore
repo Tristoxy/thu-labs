@@ -9,10 +9,12 @@ debug.html
 
 # database
 *.db
+*.sqlite
+*.sqlite3
 
 # cache
 __pycache__/
 *.pyc
 
-#analysis results
-*.png
+# IDE
+.vscode/
