@@ -2,6 +2,8 @@
 
 An online judge developed for the **Programming Practice** course at Tsinghua University. Built with **FastAPI** and **Streamlit**, it supports problem management, code submission and evaluation, user permissions, plagiarism detection, and optional AI-assisted problem generation.
 
+**First recorded commit:** [September 3, 2026](https://github.com/Tristoxy/thu-labs/commit/c5fc92fbb37898ec96d42d493d0505ed8032f4f6). The original commit history and timestamps are preserved in this collection.
+
 ## Features
 
 - Problem, user, and submission management
