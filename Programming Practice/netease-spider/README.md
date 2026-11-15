@@ -2,8 +2,6 @@
 
 A **NetEase Cloud Music crawler** developed for the **Programming Practice** course at Tsinghua University. This project combines web crawling, SQLite storage, a Django web interface, and basic analysis of lyrics and comments.
 
-**First recorded commit:** [August 21, 2026](https://github.com/Tristoxy/thu-labs/commit/f437750b82abe6cb1e2bbb553ce5864433f96e35). The original commit history and timestamps are preserved in this collection.
-
 The original collection includes approximately **275 artists, 12,500 songs, and 36,000 comments**.
 
 ## Features
