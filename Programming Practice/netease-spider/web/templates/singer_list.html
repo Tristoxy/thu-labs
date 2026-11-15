@@ -1,0 +1,71 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'thu_purple.css' %}">
+
+<!-- 页面关联 -->
+<div class="navigation">
+    <a href="/">歌曲列表页</a>
+    <a href="/singers/">歌手列表页</a>
+    <a href="/search/">搜索页</a>
+</div>
+
+<h1>歌手列表页</h1>
+
+<!-- 歌手列表 -->
+{% if page_singers %}
+    {% for singer in page_singers %}
+        <div class="page_singer">
+
+            <!-- 歌手图片 -->
+            {% if singer.image %}
+                <img src="{{ singer.image }}" alt="{{ singer.name }}" width="100">
+            {% endif %}
+
+            <!-- 歌手名称 -->
+            <p>
+                <a href="/singers/{{ singer.id }}/?return_page={{ request.get_full_path|urlencode:"" }}">
+                    <strong>{{ singer.name }}</strong>
+                </a>
+            </p>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>无歌手信息</p>
+{% endif %}
+
+<!-- 页面管理 -->
+<div class="page_management">
+
+    <!-- 首页和上一页 -->
+    {% if page_singers.has_previous %}
+        <a href="?page=1">首页</a>
+        <a href="?page={{ page_singers.previous_page_number }}">上一页</a>
+    {% endif %}
+
+
+    <!-- 页码按钮 -->
+    {% for page_number in page_numbers %}
+        <a href="?page={{ page_number }}">{{ page_number }}</a>
+    {% endfor %}
+
+
+    <!-- 当前页和总页数(一行内) -->
+    <span>
+        第 {{ page_singers.number }} 页，
+        共 {{ page_singers.paginator.num_pages }} 页
+    </span>
+
+
+    <!-- 下一页和尾页 -->
+    {% if page_singers.has_next %}
+        <a href="?page={{ page_singers.next_page_number }}">下一页</a>
+        <a href="?page={{ page_singers.paginator.num_pages }}">尾页</a>
+    {% endif %}
+
+</div>
+
+<!-- 输入页码跳转 -->
+<form method="get">
+    <label for="input_singer_page">页码跳转至：</label>
+    <input name="page" type="number" min="1" max="{{ page_singers.paginator.num_pages }}" id="input_singer_page" required>
+    <button type="submit">跳转</button>
+</form>

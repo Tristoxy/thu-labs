@@ -1,0 +1,102 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'thu_purple.css' %}">
+
+<!-- 页面关联 -->
+<div class="navigation">
+    <a href="/">歌曲列表页</a>
+    <a href="/singers/">歌手列表页</a>
+    <a href="/search/">搜索页</a>
+</div>
+
+<h1>歌曲列表页</h1>
+
+{% for song in page_songs %}
+    <!-- 歌曲信息 -->
+    <div class="page_song">
+        <!-- 专辑照片 -->
+        {% if song.album_image %}
+            <div class="song_img">
+                <img src = "{{ song.album_image }}" alt = "{{ song.name }}" width = "100">
+            </div>
+        {% endif %}
+        <!-- 歌曲 -->
+        <div class="song_info">
+            <p>
+                <a href="/songs/{{ song.id }}/?return_page={{ request.get_full_path|urlencode:"" }}"> <strong>{{ song.name }}</strong> </a>
+            </p>
+            <!-- 歌手 -->
+            <p>
+                <strong>歌手：</strong>
+
+                {% if song.singersongs_set.all %}
+                    {% for relate_singer in song.singersongs_set.all %}
+
+                        <a href="/singers/{{ relate_singer.singer.id }}/?return_page={{ request.get_full_path|urlencode:""}}">
+                            <strong>{{ relate_singer.singer.name }}</strong>
+                        </a>
+
+                        {% if not forloop.last %}
+                            、
+                        {% endif %}
+                    {% endfor %}
+
+                {% else %}
+                    无歌手信息
+                {% endif %}
+            </p>
+
+            <!-- 专辑名称 -->
+            {% if song.album_name %}
+                <p><strong>专辑：{{ song.album_name }}</strong></p>
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}
+
+
+<!-- 页面管理 -->
+<div class = "page_management">
+
+    <!-- 首页、上一页 -->
+    {% if page_songs.has_previous %}
+        <a href="?page=1">首页</a>
+        <a href="?page={{ page_songs.previous_page_number }}">上一页</a>
+    {% endif %}
+
+    <!-- 页码按钮跳转 -->
+    {% for page_number in page_numbers %}
+        <a href="?page={{ page_number }}">{{ page_number }}</a>
+    {% endfor %}
+
+    <!-- 当前页、页数提示(一行内) -->
+    <span>
+        第 {{ page_songs.number }} 页，
+        共 {{ page_songs.paginator.num_pages }} 页
+    </span>
+
+    <!-- 下一页、尾页 -->
+    {% if page_songs.has_next %}
+        <a href="?page={{ page_songs.next_page_number }}">下一页</a>
+        <a href="?page={{ page_songs.paginator.num_pages }}">尾页</a>
+    {% endif %}
+</div>
+
+    <!-- 输入页码跳转 --> 
+    <form method="get"> 
+        <label for="input_page">页码跳转至：</label>
+        <input name="page" type="number" id="input_page">
+        <button type="submit">跳转</button>
+    </form>
+
+
+
+
+
+
+
+
+
+
+
+
+

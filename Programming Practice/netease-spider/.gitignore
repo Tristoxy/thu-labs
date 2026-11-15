@@ -1,0 +1,20 @@
+# note
+note.md
+
+# cookie
+.env
+
+# debug.html
+debug.html
+
+# database
+*.db
+*.sqlite
+*.sqlite3
+
+# cache
+__pycache__/
+*.pyc
+
+# IDE
+.vscode/

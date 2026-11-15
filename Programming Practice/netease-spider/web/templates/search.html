@@ -1,0 +1,29 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'thu_purple.css' %}">
+
+<!-- 页面关联 -->
+<div class="navigation">
+    <a href="/">歌曲列表页</a>
+    <a href="/singers/">歌手列表页</a>
+    <a href="/search/">搜索页</a>
+</div>
+
+<h1>搜索页</h1>
+
+<!-- 不修改数据库，故而是get -->
+<form method="get" action="/search/result/">
+    <!-- keyword -->
+    <label for="input_keyword">搜索关键词（20字符内）：</label>
+    <input name="keyword" type="text" maxlength="20" id="input_keyword" required>
+
+    <!-- type,radio单选 -->
+    <span>搜索类型：</span>
+
+    <label for="search_song">歌曲</label>
+    <input name="search_type" value="song" type="radio" id="search_song" checked>
+
+    <label for="search_singer">歌手</label>
+    <input name="search_type" value="singer" type="radio" id="search_singer" >
+
+    <button type="submit">搜索</button>
+</form>
