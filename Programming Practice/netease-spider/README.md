@@ -1,73 +1,74 @@
-# python-spider-web-project
+# NetEase Spider
 
-一个基于 Python 的 Web 数据爬取、展示与分析项目，实现数据爬取、SQLite 存储、Django Web 展示以及简单的数据分析与可视化。
+A **NetEase Cloud Music crawler** developed for the **Programming Practice** course at Tsinghua University. This project combines web crawling, SQLite storage, a Django web interface, and basic analysis of lyrics and comments.
 
-目前已爬取约 **275 位歌手、1.25 万首歌曲和 3.6 万条评论**。
+The original collection includes approximately **275 artists, 12,500 songs, and 36,000 comments**.
 
-## 项目内容
+## Features
 
-- 简单爬虫练习
-- 网易云音乐歌手、歌曲、歌词和评论数据爬取
-- SQLite 数据存储
-- 基于 Django 的 Web 数据浏览与搜索
-- 歌词、评论数据分析与可视化
+- Introductory web crawling exercises
+- Collection of artists, songs, lyrics, and comments from NetEase Cloud Music
+- SQLite data storage
+- Browsing and search through a Django web interface
+- Word frequency, topic distribution, and text length analysis
 
-## 项目结构
+## Structure
 
 ```text
-.
-├── analysis/           # 数据分析脚本
-├── demo/               # 简单爬虫练习
-├── docs/
-│   └── images/         # Web 与数据分析结果
-├── spider/             # 网易云音乐爬虫
-├── web/                # Django Web 应用
-├── requirements.txt
-└── README.md
+netease-spider/
+├── analysis/           # Data analysis scripts
+├── demo/               # Introductory crawling exercises
+├── docs/images/        # Web screenshots and analysis results
+├── spider/             # NetEase Cloud Music crawler
+├── web/                # Django application
+└── requirements.txt
 ```
 
-## Web
+## Web Interface
 
-基于 Django 实现歌手、歌曲等数据的浏览与搜索，并提供歌曲、歌词和评论等信息的展示。
-
-<p align="center">
-  <img src="docs/images/web.png" width="80%">
-</p>
-
-具体实现见 [`web/`](web/)。
-
-## 数据分析
-
-对爬取的歌词和评论数据进行了词频、主题分布、文本长度等简单统计与可视化分析。
+The Django application provides browsing and search for artists and songs, with pages for lyrics and comments.
 
 <p align="center">
-  <img src="docs/images/lyric_words_results/lyric_words_p2.png" width="48%">
-  <img src="docs/images/lyric_words_results/lyric_words_p3.png" width="48%">
+  <img src="docs/images/web.png" width="80%" alt="NetEase Cloud Music web interface">
 </p>
 
-具体分析代码及其他结果见 [`analysis/`](analysis/) 和 [`docs/images/`](docs/images/)。
+See [`web/`](web/) for the implementation.
 
-## 环境
+## Data Analysis
+
+The analysis scripts explore word frequencies, topic distributions, and text lengths in lyrics and comments.
+
+<p align="center">
+  <img src="docs/images/lyric_words_results/lyric_words_p2.png" width="48%" alt="Lyric word analysis">
+  <img src="docs/images/lyric_words_results/lyric_words_p3.png" width="48%" alt="Lyric topic analysis">
+</p>
+
+See [`analysis/`](analysis/) for scripts and [`docs/images/`](docs/images/) for additional results.
+
+## Setup
+
+From the repository root, enter the project directory and install dependencies in a Python virtual environment:
 
 ```bash
-pip install -r requirements.txt
+cd "Programming Practice/netease-spider"
+python -m pip install -r requirements.txt
 ```
 
-爬虫部分需要安装 Node.js，并在 `spider/.env` 中配置 Cookie。
+The crawler also requires **Node.js**. Copy `spider/.env.example` to `spider/.env` and configure your Cookie locally. Keep credentials out of version control.
 
-## 运行
+## Run
 
-### 爬虫
+Start the crawler from the project directory:
 
 ```bash
 python spider/netease_cloud_music_spider.py
 ```
 
-### Web
+Start the web application:
 
 ```bash
 cd web
 python manage.py runserver
 ```
 
-数据分析脚本位于 [`analysis/`](analysis/)。
+Data analysis scripts are located in [`analysis/`](analysis/).

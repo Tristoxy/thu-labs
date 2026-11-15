@@ -1,87 +1,93 @@
-# oj-system-project
+# OJ System
 
-一个基于 **FastAPI + Streamlit** 的在线评测系统，支持题目管理、代码提交与评测、动态语言注册、用户权限、日志记录、代码查重以及可选的 AI 命题功能。
+An online judge developed for the **Programming Practice** course at Tsinghua University. Built with **FastAPI** and **Streamlit**, it supports problem management, code submission and evaluation, user permissions, plagiarism detection, and optional AI-assisted problem generation.
 
-## 项目内容
+## Features
 
-- 题目、用户、提交记录管理
-- 动态注册和管理评测语言
-- Python / C++ 代码编译与评测
-- 时间、内存和输出限制
-- Standard Judge、Strict Judge 与 Special Judge
-- 提交记录查询、测试点日志与重判
-- 基于程序结构的 Python 代码相似度查重分析
-- AI 辅助命题、进度查询与 Token 使用统计
-- FastAPI 后端与 Streamlit Web 前端
+- Problem, user, and submission management
+- Dynamic registration and configuration of judging languages
+- Python and C++ code evaluation with time, memory, and output limits
+- Standard Judge, Strict Judge, and Special Judge
+- Submission history, test-case logs, and rejudging
+- Python code similarity analysis based on program structure
+- Optional AI-assisted problem generation and token usage tracking
+- FastAPI backend and Streamlit web interface
 
-## Web
+## Preview
 
-系统提供题目浏览、代码提交、评测结果、语言管理、用户信息和系统管理等页面。
+![Online judge web interface](docs/web.png)
 
-![项目主页](docs/web.png)
-
-## 项目结构
+## Structure
 
 ```text
-.
-├── app/                # FastAPI 后端与核心业务逻辑
-│   ├── api/            # API 路由
-│   ├── core/           # 配置、权限及通用组件
-│   ├── judge/          # 代码评测
-│   ├── models/         # 数据模型
-│   ├── plagiarism/     # 代码相似度分析
-│   ├── repositories/   # 数据持久化
-│   └── services/       # 业务逻辑
-├── frontend/           # Streamlit Web 前端
-├── tests/              # 自动化测试
-├── docs/               # 项目截图
+oj-system/
+├── app/                       # Backend and core services
+│   ├── api/                   # API routes
+│   ├── core/                  # Configuration and shared components
+│   ├── judge/                 # Code evaluation
+│   ├── models/                # Data models
+│   ├── plagiarism/            # Code similarity analysis
+│   ├── repositories/          # Persistence
+│   └── services/              # Business logic
+├── frontend/                  # Streamlit interface
+├── tests/
+├── docs/                      # Screenshots
 ├── requirements.txt
 ├── requirements-dev.txt
 └── requirements-frontend.txt
 ```
 
-## 环境
+## Setup
 
-需要 **Python 3.10+**。评测 C++ 代码时还需要安装 `g++`。
+Requires **Python 3.10+**. Evaluating C++ submissions also requires `g++`.
 
-Windows 下可在项目根目录创建虚拟环境并安装依赖：
+From the repository root:
 
 ```bash
+cd "Programming Practice/oj-system"
 python -m venv .venv
-.venv\Scripts\activate
+```
+
+Activate the virtual environment:
+
+```powershell
+# Windows PowerShell
+.venv\Scripts\Activate.ps1
+```
+
+```bash
+# Linux / macOS
+source .venv/bin/activate
+```
+
+Install dependencies:
+
+```bash
 python -m pip install -r requirements-dev.txt -r requirements-frontend.txt
 ```
 
-## 运行
+## Run
 
-启动后端：
+Start the backend:
 
 ```bash
 uvicorn app.main:app
 ```
 
-启动前端：
+In another terminal, activate the same environment and run the frontend from the project directory:
 
 ```bash
 streamlit run frontend/app.py
 ```
 
-Web 页面：
+- Web interface: <http://localhost:8501>
+- API documentation: <http://127.0.0.1:8000/docs>
 
-```text
-http://localhost:8501
-```
+## Tests
 
-API 文档：
-
-```text
-http://127.0.0.1:8000/docs
-```
-
-## 测试
+Run from this project directory:
 
 ```bash
 python -m compileall -q app tests frontend
 python -m pytest -q
-git diff --check
 ```

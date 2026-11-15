@@ -6,6 +6,7 @@ stages:
 test:
   stage: test
   before_script:
+    - cd "Programming Practice/oj-system"
     - apt-get update
     - apt-get install --no-install-recommends -y g++
     - python -m pip install --upgrade pip
