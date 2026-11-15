@@ -1,6 +1,6 @@
 # NetEase Spider
 
-A **NetEase Cloud Music crawler** developed for the **Programming Practice** course at Tsinghua University. This project combines web crawling, SQLite storage, a Django web interface, and basic analysis of lyrics and comments.
+A **NetEase Cloud Music crawler** developed for the **Programming Training** course at Tsinghua University. This project combines web crawling, SQLite storage, a Django web interface, and basic analysis of lyrics and comments.
 
 The original collection includes approximately **275 artists, 12,500 songs, and 36,000 comments**.
 
@@ -50,7 +50,7 @@ See [`analysis/`](analysis/) for scripts and [`docs/images/`](docs/images/) for 
 From the repository root, enter the project directory and install dependencies in a Python virtual environment:
 
 ```bash
-cd "Programming Practice/netease-spider"
+cd "Programming Training/netease-spider"
 python -m pip install -r requirements.txt
 ```
 

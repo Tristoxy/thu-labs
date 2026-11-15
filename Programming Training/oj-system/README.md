@@ -1,6 +1,6 @@
 # OJ System
 
-An online judge developed for the **Programming Practice** course at Tsinghua University. Built with **FastAPI** and **Streamlit**, it supports problem management, code submission and evaluation, user permissions, plagiarism detection, and optional AI-assisted problem generation.
+An online judge developed for the **Programming Training** course at Tsinghua University. Built with **FastAPI** and **Streamlit**, it supports problem management, code submission and evaluation, user permissions, plagiarism detection, and optional AI-assisted problem generation.
 
 ## Features
 
@@ -44,7 +44,7 @@ Requires **Python 3.10+**. Evaluating C++ submissions also requires `g++`.
 From the repository root:
 
 ```bash
-cd "Programming Practice/oj-system"
+cd "Programming Training/oj-system"
 python -m venv .venv
 ```
 

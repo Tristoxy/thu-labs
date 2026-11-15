@@ -1,0 +1,7 @@
+*.exe
+*.o
+*.obj
+/robotgame_oj
+/src/level.txt
+/src/level2.txt
+/src/game.txt
