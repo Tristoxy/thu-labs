@@ -24,6 +24,6 @@ thu-labs/
     └── netease-spider/
 ```
 
-Each project contains its own README with setup and usage instructions. Run project commands from the corresponding project directory.
+Each project contains its own README with setup and usage instructions.
 
-More courses and labs, including CSAPP projects, may be added over time.
+More courses and labs may be added over time.
