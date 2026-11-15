@@ -1,6 +1,6 @@
 # Robotgame
 
-A C++ robot programming puzzle game developed for the **Fundamentals of Programming** course at Tsinghua University. Players write short programs to control a robot, move numbered blocks between conveyor belts and storage slots, and produce the output required by each level.
+A C++ robot programming puzzle game developed for the **Programming Fundamentals** course at Tsinghua University. Players write short programs to control a robot, move numbered blocks between conveyor belts and storage slots, and produce the output required by each level.
 
 ## Features
 
@@ -51,7 +51,7 @@ Requires a C++ compiler supporting **C++11 or later**. The interactive versions 
 From the repository root:
 
 ```powershell
-cd "Fundamentals of Programming/robotgame"
+cd "Programming Fundamentals/robotgame"
 ```
 
 ## Run

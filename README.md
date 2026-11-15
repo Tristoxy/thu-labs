@@ -4,9 +4,9 @@ A collection of labs and course projects I completed at Tsinghua University, org
 
 ## Courses
 
-### Fundamentals of Programming
+### Programming Fundamentals
 
-- [Robotgame](Fundamentals%20of%20Programming/robotgame/): A C++ robot programming puzzle game with an online judge submission version and two interactive console versions.
+- [Robotgame](Programming%20Fundamentals/robotgame/): A C++ robot programming puzzle game with an online judge submission version and two interactive console versions.
 
 ### Programming Training
 
@@ -17,7 +17,7 @@ A collection of labs and course projects I completed at Tsinghua University, org
 
 ```text
 thu-labs/
-├── Fundamentals of Programming/
+├── Programming Fundamentals/
 │   └── robotgame/
 └── Programming Training/
     ├── oj-system/
